@@ -44,10 +44,10 @@ pipeline {
       steps {
         container('kaniko') {
           sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/zambroid/dso-demo'
-}
-}
-}
-}
+        }
+      }  
+    }
+  }
 }
 
     stage('Deploy to Dev') {
