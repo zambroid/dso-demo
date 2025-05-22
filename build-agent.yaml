@@ -38,14 +38,14 @@ spec:
       imagePullPolicy: Always
       env:
         - name: container
-          value: docker
+          value: kube
       command:
         - sleep
       args:
         - 99d
       volumeMounts:
-      - name: jenkins-docker-cfg
-        mountPath: /kaniko/.docker
+        - name: jenkins-docker-cfg
+          mountPath: /kaniko/.docker
   volumes:
     - name: m2
       hostPath:
