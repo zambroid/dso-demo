@@ -43,7 +43,7 @@ pipeline {
     stage('OCI Image BnP') {
       steps {
         container('kaniko') {
-          sh 'sleep 9999999999999 ; echo "Victor fuori" ; /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/zambroid/dso-demo'
+          sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/zambroid/dso-demo'
         }
       }  
     }
