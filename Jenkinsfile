@@ -5,17 +5,20 @@ pipeline {
       defaultContainer 'maven'
       idleMinutes 1
     }
+
   }
   stages {
     stage('Build') {
       parallel {
         stage('Compile') {
           steps {
-            container('maven') {
+            container(name: 'maven') {
               sh 'mvn compile'
             }
+
           }
         }
+
       }
     }
     stage('Test') {
@@ -29,29 +32,29 @@ pipeline {
         }
       }
     }
+
     stage('Package') {
       parallel {
         stage('Create Jarfile') {
           steps {
-            container('maven') {
+            container(name: 'maven') {
               sh 'mvn package -DskipTests'
             }
           }
         }
+        stage('OCI Image BnP') {
+          steps {
+            container(name: 'kaniko') {
+              sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/zambroid/dso-demo'
+            }
+          }  
+        } 
       }
-    }
-    stage('OCI Image BnP') {
-      steps {
-        container('kaniko') {
-          sh '/kaniko/executor --verbosity debug -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --cache=true --destination=docker.io/zambroid/dso-demo'
-        }
-      }  
     }
 
     stage('Deploy to Dev') {
       steps {
-        // TODO
-        sh "echo done2"
+        sh "echo done"
       }
     }
   }
